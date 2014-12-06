@@ -1,10 +1,10 @@
 #Invoicer
 
-Simple PDF invoice generator.
+A simple PDF invoice generator for .NET.
 
 ###Usage
 
-    new InvoicerApi(SizeOption.A4, OrientationOption.Portrait, "£")
+    new InvoicerApi(SizeOption.A4, OrientationOption.Landscape, "£")
         .TextColor("#CC0000")
         .BackColor("#FFD6CC")
         .Image(@"vodafone.jpg", 125, 27)
@@ -26,7 +26,7 @@ Simple PDF invoice generator.
         .Footer("http://www.vodafone.co.uk")
         .Save();
 
-![Alt text](http://s30.postimg.org/3qtp2o7yp/14480.png "Optional title")
+![Alt text](http://s14.postimg.org/525eovuep/invoice.png "Sample Invoice")
 		
 ###References
 * [PDFsharp/MigraDoc](http://pdfsharp.com)  

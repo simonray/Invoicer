@@ -52,11 +52,11 @@ namespace Invoicer.Services.Impl
 
         public void FooterSection()
         {
-            HeaderFooter header = Pdf.LastSection.Footers.Primary;
+            HeaderFooter footer = Pdf.LastSection.Footers.Primary;
 
-            Table table = header.AddTable();
-            table.AddColumn(header.Section.PageWidth() / 2);
-            table.AddColumn(header.Section.PageWidth() / 2);
+            Table table = footer.AddTable();
+            table.AddColumn(footer.Section.PageWidth() / 2);
+            table.AddColumn(footer.Section.PageWidth() / 2);
             Row row = table.AddRow();
             if (!string.IsNullOrEmpty(Invoice.Footer))
             {
@@ -140,11 +140,13 @@ namespace Invoicer.Services.Impl
                 BillingRow(table, item);
             }
 
-            foreach (TotalRow total in Invoice.Totals)
+            if (Invoice.Totals != null)
             {
-                BillingTotal(table, total);
+                foreach (TotalRow total in Invoice.Totals)
+                {
+                    BillingTotal(table, total);
+                }
             }
-
             table.AddRow();
         }
 
@@ -269,7 +271,7 @@ namespace Invoicer.Services.Impl
             table.AddColumn(Unit.FromPoint(section.Document.PageWidth()));
             Row row = table.AddRow();
 
-            if (Invoice.Details.Count > 0)
+            if (Invoice.Details != null && Invoice.Details.Count > 0)
             {
                 foreach (DetailRow detail in Invoice.Details)
                 {
@@ -287,6 +289,32 @@ namespace Invoicer.Services.Impl
                         }
                         frame.AddParagraph(line, ParagraphAlignment.Left, "H2-9");
                     }
+                }
+            }
+
+            if (Invoice.Company.HasCompanyNumber || Invoice.Company.HasVatNumber)
+            {
+                row = table.AddRow();
+
+                Color shading = MigraDocHelpers.TextColorFromHtml(Invoice.TextColor);
+
+                if (Invoice.Company.HasCompanyNumber && Invoice.Company.HasVatNumber)
+                {
+                    row.Cells[0].AddParagraph(string.Format("Company Number: {0}, VAT Number: {1}",
+                        Invoice.Company.CompanyNumber, Invoice.Company.VatNumber),
+                        ParagraphAlignment.Center, "H2-9B-Inverse")
+                        .Format.Shading.Color = shading;
+                }
+                else
+                {
+                    if (Invoice.Company.HasCompanyNumber)
+                        row.Cells[0].AddParagraph(string.Format("Company Number: {0}", Invoice.Company.CompanyNumber),
+                        ParagraphAlignment.Center, "H2-9B-Inverse")
+                        .Format.Shading.Color = shading;
+                    else
+                        row.Cells[0].AddParagraph(string.Format("VAT Number: {0}", Invoice.Company.VatNumber),
+                        ParagraphAlignment.Center, "H2-9B-Inverse")
+                        .Format.Shading.Color = shading;
                 }
             }
         }
