@@ -1,8 +1,8 @@
-#Invoicer
+# Invoicer
 
 A simple PDF invoice generator for .NET.
 
-###Usage
+### Usage
 
     new InvoicerApi(SizeOption.A4, OrientationOption.Landscape, "£")
         .TextColor("#CC0000")
@@ -28,6 +28,6 @@ A simple PDF invoice generator for .NET.
 
 ![Alt text](http://s14.postimg.org/525eovuep/invoice.png "Sample Invoice")
 		
-###References
+### References
 * [PDFsharp/MigraDoc](http://pdfsharp.com)  
 * [HTML Color Picker](http://www.w3schools.com/tags/ref_colorpicker.asp)
